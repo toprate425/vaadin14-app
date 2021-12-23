@@ -3,6 +3,7 @@ package org.vaadin.example;
 
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.html.Span;
+import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 
 
 /**
@@ -65,7 +66,9 @@ public class QImgMkup {
     }
 
     /** User clicked UNDO button once. */
-    public void undo() {}
+    public void undo() {
+        // UNDO last image edit ?
+    }
 
     public Component getImgMkupEditor() {
 
@@ -78,7 +81,13 @@ public class QImgMkup {
          *
          */
 
-        return new Span(" --- IMAGE EDITOR TBD ---");
+        VerticalLayout fakeEditor = new VerticalLayout();
+        fakeEditor.add(new Span("......................................................"));
+        fakeEditor.add(new Span("......................................................"));
+        fakeEditor.add(new Span("..... Here is the Image editor ....."));
+        fakeEditor.add(new Span("......................................................"));
+        fakeEditor.add(new Span("......................................................"));
+        return fakeEditor;
     }
 
 }

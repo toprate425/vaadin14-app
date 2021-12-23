@@ -21,40 +21,29 @@ public class MainView extends VerticalLayout {
   public MainView() {
     this.setSizeFull();
     add( new H1("Hello world - Trialing Image Markup"));
-    Div space = new Div();
-    space.setMinHeight("1em");
-    add(space);
 
     HorizontalLayout toolBar = new HorizontalLayout();
     add(toolBar);
-    Button launchFreeformButton = new Button("Launch Freeform");
+    Button launchFreeformButton = new Button("Launch Freeform Editor");
     launchFreeformButton.addClickListener(clk->{
       workSpace.removeAll();
       launchFreeformEditor();
     });
     toolBar.add(launchFreeformButton);
 
-    Button getImgStrButton = new Button("Get Edited Content");
-    toolBar.add(getImgStrButton);
-    getImgStrButton.addClickListener(clk->{
-      if (qimgMkup==null) {
-        System.out.println("qimgMkup==null");
-      } else {
-        String editedImg = qimgMkup.getEditedJpg();
-        if (editedImg==null) {
-          System.out.println(editedImg==null);
-        } else {
-          System.out.println("Got edited image. Length="+editedImg.length());
-        }
-      }
+    Button finishEditingButton = new Button("Finish Editing");
+    toolBar.add(finishEditingButton);
+    finishEditingButton.addClickListener(clk->{
+      finishEditing();
     });
 
     workSpace = new VerticalLayout();
     workSpace.setSizeFull();
     add(workSpace);
 
+    workSpace.add(new Span("......................................................"));
     workSpace.add(new Span("..... Image editor will go here ....."));
-
+    workSpace.add(new Span("......................................................"));
 
   }
 
@@ -74,5 +63,23 @@ public class MainView extends VerticalLayout {
     workSpace.add(c);
   }
 
+  public void finishEditing() {
+    String info = "Finished Editing: ";
+    if (qimgMkup==null) {
+      info += "qimgMkup==null !";
+    } else {
+      info += " ";
+      String editedImg = qimgMkup.getEditedJpg();
+      if (editedImg==null) {
+        info += "editedImg==null";
+      } else {
+        info += " Got edited image. Base64 Length="+editedImg.length();
+      }
+    }
+
+    workSpace.removeAll();
+    workSpace.add(new Span(info));
+    qimgMkup = null;
+  }
 
 }
