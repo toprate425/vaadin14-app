@@ -2,6 +2,7 @@ package org.vaadin.example;
 
 
 import com.vaadin.flow.component.Component;
+import com.vaadin.flow.component.html.Span;
 
 
 /**
@@ -37,6 +38,7 @@ import com.vaadin.flow.component.Component;
 public class QImgMkup {
 
     private String base64Jpg = null;
+    private EditCfg cfg = null;
 
     public enum Editor {FREEFORM, CIRCLE, LINE} // TEXT???
 
@@ -58,7 +60,9 @@ public class QImgMkup {
     }
 
     /** User clicked a button to choose an editor or line color/size.  */
-    public void setEditCfg(EditCfg cfg) {}
+    public void setEditCfg(EditCfg cfg) {
+        this.cfg=cfg;
+    }
 
     /** User clicked UNDO button once. */
     public void undo() {}
@@ -74,7 +78,7 @@ public class QImgMkup {
          *
          */
 
-        return null;
+        return new Span(" --- IMAGE EDITOR TBD ---");
     }
 
 }
