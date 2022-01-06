@@ -7,6 +7,7 @@ import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.checkbox.Checkbox;
 import com.vaadin.flow.component.html.*;
 import com.vaadin.flow.component.icon.VaadinIcon;
+import com.vaadin.flow.component.upload.Upload;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
@@ -17,6 +18,11 @@ public class MainView extends VerticalLayout {
 
   private VerticalLayout workSpace = null;
   private QImgMkup qimgMkup = null;
+
+  private static final int CANVAS_WIDTH = 800;
+  private static final int CANVAS_HEIGHT = 400;
+
+  private CanvasRenderingContext2D ctx;
 
   public MainView() {
     this.setSizeFull();
@@ -71,22 +77,51 @@ public class MainView extends VerticalLayout {
       finishEditing();
     });
 
+
+    Canvas canvas = new Canvas(CANVAS_WIDTH, CANVAS_HEIGHT);
+    canvas.getStyle().set("border", "1px solid");
+
+    ctx = canvas.getContext();
+    add(canvas);
+
+    Input sample = new Input();
+    sample.setValue("resources/sample.jpg");
+
+    ctx.drawImage(sample.getValue(), 0, 0);
+
     workSpace = new VerticalLayout();
     workSpace.setSizeFull();
     add(workSpace);
 
     // starts with just showing the image ...
-    launchViewOnlyNoEditor();
+    // launchViewOnlyNoEditor();
   }
 
-  private void launchViewOnlyNoEditor() {
+  // private void launchViewOnlyNoEditor() {
+  //   workSpace.removeAll();
+  //   String sampleJpgBase64Jpg = ""; // From txt file
+
+  //   QImgMkup.EditCfg cfg = new QImgMkup.EditCfg();
+  //   cfg.color = "N/A";
+  //   cfg.thicknessPx = 0;
+  //   cfg.editor = QImgMkup.Editor.VIEW_ONLY;
+
+  //   qimgMkup = new QImgMkup(sampleJpgBase64Jpg);
+  //   qimgMkup.setEditCfg(cfg);
+
+  //   Component c = qimgMkup.getImgMkupEditor();
+  //   workSpace.add(c);
+  // }
+
+  private void launchLineEditor() {
     workSpace.removeAll();
+
     String sampleJpgBase64Jpg = ""; // From txt file
 
     QImgMkup.EditCfg cfg = new QImgMkup.EditCfg();
-    cfg.color = "N/A";
-    cfg.thicknessPx = 0;
-    cfg.editor = QImgMkup.Editor.VIEW_ONLY;
+    cfg.color = "green";
+    cfg.thicknessPx = 8;
+    cfg.editor = QImgMkup.Editor.LINE;
 
     qimgMkup = new QImgMkup(sampleJpgBase64Jpg);
     qimgMkup.setEditCfg(cfg);
@@ -113,6 +148,7 @@ public class MainView extends VerticalLayout {
 
   private void launchCircleEditor() {
     workSpace.removeAll();
+    drawRandomCircle();
     String sampleJpgBase64Jpg = ""; // From txt file
 
     QImgMkup.EditCfg cfg = new QImgMkup.EditCfg();
@@ -123,22 +159,7 @@ public class MainView extends VerticalLayout {
     qimgMkup = new QImgMkup(sampleJpgBase64Jpg);
     qimgMkup.setEditCfg(cfg);
 
-    Component c = qimgMkup.getImgMkupEditor();
-    workSpace.add(c);
-  }
-
-  private void launchLineEditor() {
-    workSpace.removeAll();
-    String sampleJpgBase64Jpg = ""; // From txt file
-
-    QImgMkup.EditCfg cfg = new QImgMkup.EditCfg();
-    cfg.color = "green";
-    cfg.thicknessPx = 8;
-    cfg.editor = QImgMkup.Editor.LINE;
-
-    qimgMkup = new QImgMkup(sampleJpgBase64Jpg);
-    qimgMkup.setEditCfg(cfg);
-
+    qimgMkup.getImgMkupEditor();
     Component c = qimgMkup.getImgMkupEditor();
     workSpace.add(c);
   }
@@ -177,6 +198,24 @@ public class MainView extends VerticalLayout {
     workSpace.removeAll();
     workSpace.add(new Span(info));
     qimgMkup = null;
+  }
+
+  private void drawRandomCircle() {
+    ctx.save();
+    ctx.setLineWidth(2);
+    ctx.setFillStyle(getRandomColor());
+    ctx.beginPath();
+    ctx.arc(Math.random() * CANVAS_WIDTH, Math.random() * CANVAS_HEIGHT,
+            10 + Math.random() * 90, 0, 2 * Math.PI, false);
+    ctx.closePath();
+    ctx.stroke();
+    ctx.fill();
+    ctx.restore();
+  }
+
+  private String getRandomColor() {
+      return String.format("rgb(%s, %s, %s)", (int) (Math.random() * 256),
+              (int) (Math.random() * 256), (int) (Math.random() * 256));
   }
 
 }
