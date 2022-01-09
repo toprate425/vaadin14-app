@@ -2,12 +2,9 @@ package org.vaadin.example;
 
 
 import com.vaadin.flow.component.Component;
-import com.vaadin.flow.component.Html;
 import com.vaadin.flow.component.html.Span;
-import com.vaadin.flow.component.html.Input;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-// import com.vaadin.flow.component.dependency.JsModule;
-import com.vaadin.flow.server.StreamResource;
+
 
 /**
  * This is just an idea to get the image editing minimum internal in QWeb.
@@ -39,21 +36,19 @@ import com.vaadin.flow.server.StreamResource;
  * File newJpg = QUtil.base64Str2File(qimgMkup.getEditedJpg());
  *
  */
-// @JsModule("./js/line.js")
 public class QImgMkup {
 
     private String base64Jpg = null;
     private EditCfg cfg = null;
 
-    public enum Editor {VIEW_ONLY, FREEFORM, CIRCLE, LINE, TEXT}
+    public enum Editor {FREEFORM, CIRCLE, LINE} // TEXT???
 
     public static class EditCfg {
         public String color = "red";
         public int thicknessPx = 4; // px
         public Editor editor = Editor.FREEFORM; // FREEFORM = default editor
-        // If (add text enabled): String font - default font maybe OK for now
-        // If (add text enabled): int fontSize
-        // If (add text enabled): String txt - MAYBE OK to hand text to editor and not edit on image
+        // If (add text enabled): String font, int fontSize, String txt
+
     }
 
     public QImgMkup(String base64Jpg) {
@@ -87,14 +82,11 @@ public class QImgMkup {
          */
 
         VerticalLayout fakeEditor = new VerticalLayout();
-        // fakeEditor.add(new Span("................................................................"));
-        // fakeEditor.add(new Span("................................................................"));
-        // String txt = "<p>..... Here is the <b>";
-        // txt += cfg.editor;
-        // txt += "</b> image editor ....</p>";
-        // fakeEditor.add(new Span(new Html(txt)));
-        // fakeEditor.add(new Span("................................................................"));
-        // fakeEditor.add(new Span("................................................................"));
+        fakeEditor.add(new Span("......................................................"));
+        fakeEditor.add(new Span("......................................................"));
+        fakeEditor.add(new Span("..... Here is the Image editor ....."));
+        fakeEditor.add(new Span("......................................................"));
+        fakeEditor.add(new Span("......................................................"));
         return fakeEditor;
     }
 
